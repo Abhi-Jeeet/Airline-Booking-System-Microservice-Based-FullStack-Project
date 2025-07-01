@@ -115,7 +115,7 @@ export default function FlightDetailPage() {
               </p>
             </div>
             <div className="text-right">
-              <div className="text-4xl font-bold">${flight.price}</div>
+              <div className="text-4xl font-bold">₹{flight.price}</div>
               <p className="text-blue-100">per passenger</p>
             </div>
           </div>
@@ -210,7 +210,7 @@ export default function FlightDetailPage() {
                     <div className="flex items-center space-x-3 p-4 bg-orange-50 rounded-lg">
                       <DollarSign className="h-5 w-5 text-orange-600" />
                       <div>
-                        <div className="font-semibold text-gray-900">${flight.price * flight.totalSeats}</div>
+                        <div className="font-semibold text-gray-900">₹{flight.price * flight.totalSeats}</div>
                         <div className="text-sm text-gray-600">Total Value</div>
                       </div>
                     </div>
@@ -268,7 +268,7 @@ export default function FlightDetailPage() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-600">Price:</span>
-                          <span className="font-medium">${flight.price}</span>
+                          <span className="font-medium">₹{flight.price}</span>
                         </div>
                       </div>
                     </div>
@@ -366,7 +366,7 @@ export default function FlightDetailPage() {
                 <CardContent className="p-6">
                   <div className="space-y-6">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900">${flight.price}</div>
+                      <div className="text-3xl font-bold text-gray-900">₹{flight.price}</div>
                       <p className="text-gray-600">per passenger</p>
                     </div>
                     
