@@ -28,6 +28,18 @@ FLIGHT_API.interceptors.response.use(
   },
   (error) => {
     console.error('Flight API Response Error:', error.response?.status, error.message);
+    
+    // Enhanced error handling for different scenarios
+    if (axios.isAxiosError(error)) {
+      if (error.code === 'ECONNREFUSED') {
+        throw new Error('Flight service is not running. Please start the FlightService microservice.');
+      } else if (error.response?.status === 500) {
+        throw new Error('Database connection error. Please check Supabase configuration.');
+      } else if (error.response?.status === 404) {
+        throw new Error('Flight not found.');
+      }
+    }
+    
     return Promise.reject(error);
   }
 );
@@ -46,6 +58,30 @@ export interface Flight {
   boardingGate: string;
   createdAt: string;
   updatedAt: string;
+  // Include related data
+  airplaneDetail?: {
+    id: string;
+    modelNumber: string;
+    capacity: number;
+  };
+  departureAirport?: {
+    id: string;
+    name: string;
+    code: string;
+    city?: {
+      id: string;
+      name: string;
+    };
+  };
+  arrivalAirport?: {
+    id: string;
+    name: string;
+    code: string;
+    city?: {
+      id: string;
+      name: string;
+    };
+  };
 }
 
 export interface Airport {
@@ -54,6 +90,10 @@ export interface Airport {
   code: string;
   address: string;
   cityId: string;
+  city?: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface City {
@@ -66,6 +106,8 @@ export interface FlightSearchParams {
   departureDate?: string;
   arrivalDate?: string;
   passengers?: number;
+  departureCity?: string;
+  arrivalCity?: string;
 }
 
 export const flightService = {
@@ -76,9 +118,6 @@ export const flightService = {
       return response.data.data || [];
     } catch (error) {
       console.error('Error fetching flights:', error);
-      if (axios.isAxiosError(error) && error.code === 'ECONNREFUSED') {
-        throw new Error('Flight service is not running. Please start the FlightService microservice.');
-      }
       throw error;
     }
   },
@@ -90,9 +129,6 @@ export const flightService = {
       return response.data.data;
     } catch (error) {
       console.error('Error fetching flight:', error);
-      if (axios.isAxiosError(error) && error.code === 'ECONNREFUSED') {
-        throw new Error('Flight service is not running. Please start the FlightService microservice.');
-      }
       throw error;
     }
   },
@@ -104,9 +140,6 @@ export const flightService = {
       return response.data.data || [];
     } catch (error) {
       console.error('Error fetching airports:', error);
-      if (axios.isAxiosError(error) && error.code === 'ECONNREFUSED') {
-        throw new Error('Flight service is not running. Please start the FlightService microservice.');
-      }
       throw error;
     }
   },
@@ -118,9 +151,6 @@ export const flightService = {
       return response.data.data || [];
     } catch (error) {
       console.error('Error fetching cities:', error);
-      if (axios.isAxiosError(error) && error.code === 'ECONNREFUSED') {
-        throw new Error('Flight service is not running. Please start the FlightService microservice.');
-      }
       throw error;
     }
   },
@@ -135,10 +165,18 @@ export const flightService = {
       return response.data.data;
     } catch (error) {
       console.error('Error updating seats:', error);
-      if (axios.isAxiosError(error) && error.code === 'ECONNREFUSED') {
-        throw new Error('Flight service is not running. Please start the FlightService microservice.');
-      }
       throw error;
+    }
+  },
+
+  // Check service health
+  checkHealth: async (): Promise<boolean> => {
+    try {
+      await FLIGHT_API.get('/health');
+      return true;
+    } catch (error) {
+      console.error('Flight service health check failed:', error);
+      return false;
     }
   },
 }; 
