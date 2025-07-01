@@ -5,13 +5,26 @@ const apiRoutes = require('./routes')
 
 const app = express();
 
+// Add CORS middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, x-idempotency-key');
+  
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.use("/api", apiRoutes);
 
-app.listen(PORT, ()=>{
-    console.log(`Successfully started the server at PORT :${PORT}`);
+app.listen(PORT || 3001, ()=>{
+    console.log(`Successfully started the server at PORT :${PORT || 3001}`);
     
 })
 
