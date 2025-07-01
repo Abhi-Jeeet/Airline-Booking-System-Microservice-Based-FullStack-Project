@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkyBook - Airline Booking Frontend
+
+A modern Next.js frontend for the microservice-based airline booking system.
+
+## Features
+
+- 🛫 Flight search and booking
+- 💳 Payment processing
+- 📱 Responsive design
+- 🔄 Real-time state management with Redux
+- 🎨 Modern UI with Tailwind CSS
+
+## Tech Stack
+
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Redux Toolkit
+- **HTTP Client**: Axios
+- **Icons**: Lucide React
+- **Forms**: React Hook Form
+- **Validation**: Zod
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── booking/           # Booking flow pages
+│   │   ├── create/        # Create booking
+│   │   ├── payment/       # Payment processing
+│   │   └── success/       # Booking confirmation
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/
+│   ├── ui/                # Reusable UI components
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   └── Card.tsx
+│   ├── flight/            # Flight-related components
+│   │   ├── FlightSearch.tsx
+│   │   ├── FlightCard.tsx
+│   │   └── FlightList.tsx
+│   └── layout/            # Layout components
+│       └── Header.tsx
+├── lib/
+│   ├── api/               # API service layers
+│   │   ├── flightService.ts
+│   │   └── bookingService.ts
+│   └── store/             # Redux store
+│       ├── slices/
+│       │   ├── flightSlice.ts
+│       │   ├── bookingSlice.ts
+│       │   └── authSlice.ts
+│       ├── store.ts
+│       └── Providers.tsx
+└── types/                 # TypeScript type definitions
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+- Running microservices (FlightService and BookingService)
+
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Create environment file:
+```bash
+# Create .env.local file with the following content:
+NEXT_PUBLIC_FLIGHT_SERVICE_URL=http://localhost:3001/api/v1
+NEXT_PUBLIC_BOOKING_SERVICE_URL=http://localhost:3002/api/v1
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## API Integration
 
-To learn more about Next.js, take a look at the following resources:
+### Flight Service
+- **Base URL**: `http://localhost:3001/api/v1`
+- **Endpoints**:
+  - `GET /flights` - Search flights
+  - `GET /flights/:id` - Get specific flight
+  - `GET /airports` - Get airports
+  - `GET /cities` - Get cities
+  - `PATCH /flights/:id/seats` - Update seats
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Booking Service
+- **Base URL**: `http://localhost:3002/api/v1`
+- **Endpoints**:
+  - `POST /bookings` - Create booking
+  - `POST /bookings/payments` - Process payment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. **Search Flights**: Use the search form on the home page
+2. **Select Flight**: Click on a flight card to proceed to booking
+3. **Enter Details**: Fill in passenger information
+4. **Payment**: Complete payment to confirm booking
+5. **Confirmation**: View booking confirmation and details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Adding New Features
+
+1. Create components in `src/components/`
+2. Add API services in `src/lib/api/`
+3. Update Redux slices in `src/lib/store/slices/`
+4. Create pages in `src/app/`
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
