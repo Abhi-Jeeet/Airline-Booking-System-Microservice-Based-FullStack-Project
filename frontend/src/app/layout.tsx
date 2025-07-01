@@ -22,13 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
-            <Header />
-            <main className="py-8">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          {children}
         </Providers>
       </body>
     </html>
